@@ -73,17 +73,46 @@
 //
 // greet('Jack', cb);
 
+// var fs = require('fs');
+//
+// function cb (err, data) {
+//   if (err){
+//     console.log('there was an err');
+//   } else {
+//     var contents = data.toString();
+//     var split = contents.split('\n');
+//     var length = split.length - 1;
+//     console.log(length);
+//   }
+// }
+//
+// fs.readFile(process.argv[2], cb);
+
+//////////////////////////////////
+//*********PROMISES*************//
+//////////////////////////////////
+
 var fs = require('fs');
 
-function cb (err, data) {
-  if (err){
-    console.log('there was an err');
-  } else {
-    console.log('no error');
-    console.log(data);
-  }
+function readWithPromise(){
+
+  return new Promise(function(resolve, reject) {
+    fs.readFile(process.argv[2], function(err, data){
+      if (err){
+        reject(err);
+      } else {
+        resolve(data);
+      }
+    });
+  });
+
 }
 
-var buffer = fs.readFile(process.argv[2], cb);
+function convert(buffer) {
+  return buffer.toString();
+}
 
-console.log(buffer);
+readWithPromise()
+  .then(buffer => convert(buffer))
+  .then(res => console.log(res))
+  .catch(err => console.log(err));
