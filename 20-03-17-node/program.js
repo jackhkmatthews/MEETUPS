@@ -62,9 +62,28 @@
 //******FIRST ASYNC I/O*********//
 //////////////////////////////////
 
+// var cb = function(input){
+//   console.log(`This is from cb ${input}`);
+// };
+//
+// function greet(name, func){
+//   var up = name.toUpperCase();
+//   func(up);
+// }
+//
+// greet('Jack', cb);
+
 var fs = require('fs');
-var buffer = fs.readFile(process.argv[2]);
-var contents = buffer.toString();
-var split = contents.split('\n');
-var length = split.length - 1;
-console.log(length);
+
+function cb (err, data) {
+  if (err){
+    console.log('there was an err');
+  } else {
+    console.log('no error');
+    console.log(data);
+  }
+}
+
+var buffer = fs.readFile(process.argv[2], cb);
+
+console.log(buffer);
